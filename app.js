@@ -1,35 +1,49 @@
-// #2.1 Mouse Painting
+//#2.2 Line Width
 
-const canvas = document.querySelector("canvas");
-const ctx = canvas.getContext("2d");
+const canvas = document.querySelector('canvas');
+const ctx = canvas.getContext('2d');
+const lineWidth = document.getElementById('line-width');
 
 canvas.width = 800;
 canvas.height = 800;
-ctx.lineWidth = 2;
+
+ctx.lineWidth = lineWidth.value;
 
 let isPainting = false;
 
-function onMove(event){
+function onMove(event){ 
+
     if(isPainting){
+        
         ctx.lineTo(event.offsetX, event.offsetY);
         ctx.stroke();
         return;
     }
+
     ctx.moveTo(event.offsetX, event.offsetY);
+
 }
 
 function startPainting(){
     isPainting = true;
 }
 
-function finishPainting(){
+function stopPainting(){
     isPainting = false;
+    ctx.beginPath();
+
 }
 
-canvas.addEventListener("mousemove", onMove);
-canvas.addEventListener("mousedown", startPainting);
-canvas.addEventListener("mouseup", finishPainting);
-canvas.addEventListener("mouseleave", finishPainting);
 
-// document.addEventListener("mouseup", finishPainting);
+function onLineWidthChange(event){
+    ctx.lineWidth = event.target.value;
+// console.log(event.target.value);
+}
 
+
+canvas.addEventListener('mousemove', onMove);
+canvas.addEventListener('mousedown', startPainting);
+canvas.addEventListener('mouseup', stopPainting);
+canvas.addEventListener('mouseleave', stopPainting);
+
+lineWidth.addEventListener('change', onLineWidthChange);
