@@ -1,5 +1,7 @@
-//3.0 Adding Images
+//3.2 Saving Image
 
+const saveBtn = document.getElementById('save');
+const textInput = document.getElementById('text');
 const fileInput = document.getElementById('file');
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
@@ -17,6 +19,8 @@ canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
 
 ctx.lineWidth = lineWidth.value; //This only happens once.
+ctx.lineCap = "round";
+
 ctx.color = color.value;
 
 let isPainting = false;
@@ -102,9 +106,35 @@ function onFileChange(event){
     }
 }
 
+function onDoubleClick(event){
+    const text = textInput.value;
+
+    if(text !== ""){
+
+    ctx.save(); // Saves the current state (colour style etc) of the ctx.
+    ctx.lineWidth = 1;
+    ctx.font = "70px serif"
+    ctx.fillText(text, event.offsetX, event.offsetY);
+    ctx.restore(); //Put it back to the previous version.
+    }
+}
+
+function onSaveClick(){
+    // canvas.toDataURL();
+    const url = canvas.toDataURL();
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "myDrawing.png";
+    a.click();
+}
+
+
+
 canvas.onmousemove = function(){
 
 }
+
+canvas.addEventListener('dblclick', onDoubleClick);
 canvas.addEventListener('mousemove', onMove);
 canvas.addEventListener('mousedown', startPainting);
 canvas.addEventListener('mouseup', finishPainting);
@@ -124,4 +154,5 @@ colorOptions.forEach((color) => color.addEventListener("click", onColorClick));
 modeBtn.addEventListener('click', onModeClick);
 destroyBtn.addEventListener('click', onDestroyClick);
 eraserBtn.addEventListener('click', onEraserClick);
-fileInput.addEventListener('change', onFileChange)
+fileInput.addEventListener('change', onFileChange);
+saveBtn.addEventListener('click', onSaveClick);
