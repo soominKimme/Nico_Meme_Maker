@@ -96,7 +96,7 @@ function onEraserClick(){
 
 function onFileChange(event){
     const file = event.target.files[0];
-    const url = URL.createObjectURL(file);
+    const url = URL.createObjectURL(file); //
     const image = new Image();    //This is same as <img src=""/> in HTML
     image.src = url;
     image.onload = function(){
